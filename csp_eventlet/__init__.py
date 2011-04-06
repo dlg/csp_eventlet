@@ -8,7 +8,7 @@ try:
     import json
 except:
     import simplejson as json
-#testfoobar
+
 logger = logging.getLogger('csp_eventlet')
 
 
@@ -17,21 +17,21 @@ def test(port):
         l = csp_listener(("", port))
         while True:
             conn, addr = l.accept()
-            print 'ACCEPTED', conn, addr
+            logger.debug('ACCEPTED %s %s', conn, addr)
             eventlet.spawn(echo, conn)
     except KeyboardInterrupt:
-        print "Ctr-c, Quitting"
+        logger.info("Ctr-c, Quitting")
         
 def echo(conn):
     conn.send("Welcome")
     while True:
         d = conn.recv(1024)
-        print 'RECV', repr(d)
+        logger.debug('RECV %s', repr(d))
         if not d:
             break
         conn.send(d)
-        print 'SEND', repr(d)
-    print "Conn closed"
+        logger.debug('SEND %s', repr(d))
+    logger.debug("Conn closed")
 
 def csp_listener((interface, port)):
     l = Listener(interface, port)
