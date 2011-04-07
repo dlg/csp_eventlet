@@ -46,7 +46,7 @@ class Listener(object):
         self._sessions = {}
         
     def listen(self):
-        eventlet.spawn(wsgi.server, eventlet.listen((self.interface, self.port)), self)
+        eventlet.spawn(wsgi.server, eventlet.listen((self.interface, self.port)), self, max_size=30000) # max_size = dlg hack
 
     def __call__(self, environ, start_response):
         path = environ['PATH_INFO']
