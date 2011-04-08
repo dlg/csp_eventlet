@@ -118,10 +118,12 @@ class CSPSocket(object):
         self.session = session
         self.environ = session.environ
         
-    def send(self, data):
+    def send(self, data, send_non_blocking=False):
+        # XXX ??? I don't get how to use send_non_blocking here -- dlg
         return self.session.blocking_send(data)
     
-    def sendall(self, data):
+    def sendall(self, data, send_non_blocking=False):
+        # XXX ??? I don't get how to use send_non_blocking here -- dlg
         self.session.blocking_send(data)
     
     def recv(self, max):
@@ -194,7 +196,8 @@ class CSPSession(object):
             else:
                 self.close()
             break
-    
+   
+    # ??? I don't get how this is blocking -- dlg 
     def blocking_send(self, data):
         if self.is_closed:
             raise Exception("CSPSession is closed, cannot call send")
